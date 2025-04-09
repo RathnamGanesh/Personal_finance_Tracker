@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Finance Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Personal Finance Tracker</h1>
+        <p class="balance">Balance: ₹{{ balance }}</p>
+
+        <form method="POST">
+            <input type="number" name="amount" placeholder="Amount" step="0.01" required>
+            <input type="text" name="category" placeholder="Category (Food, Rent, etc.)" required>
+            <select name="type">
+                <option value="Income">Income</option>
+                <option value="Expense">Expense</option>
+            </select>
+            <button type="submit">Add Transaction</button>
+        </form>
+
+        <h2>Clear Transactions by Month</h2>
+        <form action="/clear_month" method="post" class="clear-form">
+            <input type="number" name="month" placeholder="Month (1-12)" min="1" max="12" required>
+            <input type="number" name="year" placeholder="Year (e.g. 2025)" min="2000" max="2100" required>
+            <button type="submit">Clear</button>
+        </form>
+
+        <h2>Transactions</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t.date }}</td>
+                <td>{{ t.type }}</td>
+                <td>{{ t.category }}</td>
+                <td>₹{{ t.amount }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <a href="/graph">View Expense Graph</a>
+    </div>
+</body>
+</html>
